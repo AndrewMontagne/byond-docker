@@ -1,0 +1,4 @@
+build:
+  tags:
+    - shell-runner
+  script: "make build"

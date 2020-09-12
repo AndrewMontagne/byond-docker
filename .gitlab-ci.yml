@@ -4,4 +4,4 @@ build:
   script:
     - echo $DOCKER_REGISTRY_PASSWORD | docker login --username $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY 
     - make build
-    - docker push $DOCKER_REGISTRY/group/project/image:latest
+    - docker push andrewmontagne/byond-docker:$CI_COMMIT_SHORT_SHA

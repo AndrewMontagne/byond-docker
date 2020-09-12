@@ -2,6 +2,6 @@ build:
   tags:
     - shell-runner
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY 
+    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD $DOCKER_REGISTRY 
     - make build
-    - docker push $CI_REGISTRY/group/project/image:latest
+    - docker push $DOCKER_REGISTRY/group/project/image:latest

@@ -3,5 +3,7 @@ build:
     - shell-runner
   script:
     - echo $DOCKER_REGISTRY_PASSWORD | docker login --username $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY 
-    - docker build . -t andrewmontagne/byond:$CI_COMMIT_SHORT_SHA
+    - docker build . --squash -t andrewmontagne/byond:$CI_COMMIT_SHORT_SHA
     - docker push andrewmontagne/byond:$CI_COMMIT_SHORT_SHA
+    - docker tag andrewmontagne/byond:$CI_COMMIT_SHORT_SHA andrewmontagne/byond:latest
+    - docker push andrewmontagne/byond:latest

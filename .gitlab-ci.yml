@@ -2,6 +2,6 @@ build:
   tags:
     - shell-runner
   script:
-    - docker login -u $DOCKER_REGISTRY_USER -p $DOCKER_REGISTRY_PASSWORD $DOCKER_REGISTRY 
+    - echo $DOCKER_REGISTRY_PASSWORD | docker login --username $DOCKER_REGISTRY_USER --password-stdin $DOCKER_REGISTRY 
     - make build
     - docker push $DOCKER_REGISTRY/group/project/image:latest

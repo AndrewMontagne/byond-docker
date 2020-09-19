@@ -13,3 +13,4 @@ RUN cd ~/inode64 && ./build.sh
 RUN mkdir /root/.byond && mkdir /root/.byond/bin
 COPY tools/libbyond-extools.so /root/.byond/bin/libbyond-extools.so
 COPY tools/DreamChecker /usr/bin/DreamChecker
+COPY env.sh /byond/env.sh

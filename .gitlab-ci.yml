@@ -25,4 +25,4 @@ prune:
     - shell-runner
   script:
     - docker rmi andrewmontagne/byond:$CI_COMMIT_SHORT_SHA
-    - docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+    - docker rmi $(docker images -q --filter "dangling=true")

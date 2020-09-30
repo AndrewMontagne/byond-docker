@@ -24,4 +24,5 @@ prune:
   tags:
     - shell-runner
   script:
-    - docker image prune -a --force --filter "until=24h"
+    - docker rmi andrewmontagne/byond:$CI_COMMIT_SHORT_SHA
+    - docker rmi $(docker images | grep "^<none>" | awk "{print $3}")

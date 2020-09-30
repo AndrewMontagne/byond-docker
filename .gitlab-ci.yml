@@ -1,8 +1,27 @@
+stages:
+  - build
+  - publish
+  - cleanup
+
 build:
+  stage: build
   tags:
     - shell-runner
   script:
     - docker build . --squash -t andrewmontagne/byond:$CI_COMMIT_SHORT_SHA
+
+docker-hub:
+  stage: publish
+  tags:
+    - shell-runner
+  script:
     - docker push andrewmontagne/byond:$CI_COMMIT_SHORT_SHA
     - docker tag andrewmontagne/byond:$CI_COMMIT_SHORT_SHA andrewmontagne/byond:$CI_COMMIT_BRANCH
     - docker push andrewmontagne/byond:$CI_COMMIT_BRANCH
+
+prune:
+  stage: cleanup
+  tags:
+    - shell-runner
+  script:
+    - docker image prune -a --force --filter "until=24h"

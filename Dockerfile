@@ -23,7 +23,7 @@ RUN cd ~/inode64 && ./build.sh
 RUN cd /tmp && git clone https://github.com/MCHSL/extools.git
 RUN cd /tmp/extools/byond-extools && cmake . && make
 RUN mkdir /root/.byond && mkdir /root/.byond/bin
-RUN mv /tmp/extools/byond-extools/libbyond-extools.so /root/.byond/bin/libbyond-extools.so
+RUN mv /tmp/extools/byond-extools/libbyond-extools.so /root/.byond/bin/byond-extools
 RUN mv /tmp/extools/byond-extools/src/dm/socket.dm /byond/lib/socket.dm
 RUN mv /tmp/extools/byond-extools/src/dm/_extools_api.dm /byond/lib/_extools_api.dm
 RUN rm -rf /tmp/extools

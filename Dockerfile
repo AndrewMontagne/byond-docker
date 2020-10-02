@@ -30,7 +30,7 @@ RUN rm -rf /tmp/extools
 
 # rust-g
 RUN cd /tmp && git clone https://github.com/tgstation/rust-g.git
-RUN cd /tmp/rust-g && cargo build --release
+RUN cd /tmp/rust-g && cargo build --release --features dmi,noise,file,git,hash,log,url,http,sql
 RUN mv /tmp/rust-g/target/release/librust_g.so /root/.byond/bin/librust_g.so
 RUN mv /tmp/rust-g/target/rust_g.dm /byond/lib/rust_g.dm
 RUN rm -rf /tmp/rust-g

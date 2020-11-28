@@ -8,7 +8,7 @@ build:
   tags:
     - shell-runner
   script:
-    - docker build . --squash -t andrewmontagne/byond:$CI_COMMIT_SHORT_SHA
+    - docker build . --no-cache --squash -t andrewmontagne/byond:$CI_COMMIT_SHORT_SHA
 
 docker-hub:
   stage: publish

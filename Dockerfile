@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM debian:stable-slim
 RUN dpkg --add-architecture i386
 RUN apt-get update
 RUN (DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y python3 python3-pip rsync curl git wget)
@@ -39,8 +39,7 @@ RUN rm -rf /tmp/rust-g
 COPY tools/DreamChecker /usr/bin/DreamChecker
 COPY env.sh /byond/env.sh
 
-RUN rm -rf /tmp/*
 RUN rustup self uninstall -y
-RUN rm -rf /root/.cargo && rm -rf /root/.rustup
+RUN rm -rf /root/.cargo && rm -rf /root/.rustup && rm -rf /tmp/*
 RUN (DEBIAN_FRONTEND=noninteractive apt-get remove -y g++-multilib gcc-multilib cmake python3-pip git curl wget)
 RUN (DEBIAN_FRONTEND=noninteractive apt-get autoremove -y)

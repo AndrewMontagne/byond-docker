@@ -1,8 +1,8 @@
 .PHONY: build sh
 
-sh: build
+sh:
 	-docker rm -f byond
-	docker run -dit --rm --mount type=bind,source=$(HOME)/dev,target=/code -p3665:3665 --name byond andrewmontagne/byond:latest
+	docker run -it --rm --name byond andrewmontagne/byond:latest /bin/bash
 
 build:
-	docker build . -t andrewmontagne/byond
+	docker build . --squash -t andrewmontagne/byond

@@ -1,8 +1,9 @@
 FROM debian:stable
 RUN dpkg --add-architecture i386
 RUN apt-get update
-RUN (DEBIAN_FRONTEND=noninteractive apt-get install -y python3 python3-pip nano wget procps rsync git curl)
-RUN (DEBIAN_FRONTEND=noninteractive apt-get install -y g++-multilib gcc-multilib cmake make libc6:i386 libncurses5:i386 libstdc++6:i386 zlib1g-dev:i386 libssl-dev:i386 pkg-config:i386)
+RUN (DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y python3 python3-pip rsync curl git wget)
+RUN (DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y g++-multilib gcc-multilib cmake make libc6:i386 libncurses5:i386 libstdc++6:i386 zlib1g-dev:i386 libssl-dev:i386 pkg-config:i386)
+RUN rm -rf /var/lib/apt/lists/*
 RUN pip3 install requests
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
@@ -37,3 +38,9 @@ RUN rm -rf /tmp/rust-g
 
 COPY tools/DreamChecker /usr/bin/DreamChecker
 COPY env.sh /byond/env.sh
+
+RUN rm -rf /tmp/*
+RUN rustup self uninstall -y
+RUN rm -rf /root/.cargo && rm -rf /root/.rustup
+RUN (DEBIAN_FRONTEND=noninteractive apt-get remove -y g++-multilib gcc-multilib cmake python3-pip git curl wget)
+RUN (DEBIAN_FRONTEND=noninteractive apt-get autoremove -y)

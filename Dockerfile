@@ -36,9 +36,21 @@ RUN mv /tmp/rust-g/target/release/librust_g.so /root/.byond/bin/librust_g.so
 RUN mv /tmp/rust-g/target/rust_g.dm /byond/lib/rust_g.dm
 RUN rm -rf /tmp/rust-g
 
-COPY tools/DreamChecker /usr/bin/DreamChecker
 COPY env.sh /byond/env.sh
 
+# SpacemanDMM
+RUN cd /tmp && git clone https://github.com/SpaceManiac/SpacemanDMM.git
+RUN cd /tmp/SpacemanDMM && cargo build --release
+
+RUN cp /tmp/SpacemanDMM/target/release/dreamchecker /usr/bin/DreamChecker
+RUN cp /tmp/SpacemanDMM/target/release/dmm-tools /usr/bin/dmm-tools
+RUN cp /tmp/SpacemanDMM/target/release/dmdoc /usr/bin/dmdoc
+RUN cp /tmp/SpacemanDMM/target/release/dm-langserver /usr/bin/dm-langserver
+
+# Environment File
+COPY env.sh /byond/env.sh
+
+# Cleanup
 RUN rustup self uninstall -y
 RUN rm -rf /root/.cargo && rm -rf /root/.rustup && rm -rf /tmp/*
 RUN (DEBIAN_FRONTEND=noninteractive apt-get remove -y g++-multilib gcc-multilib cmake python3-pip git curl wget)

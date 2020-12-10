@@ -53,5 +53,5 @@ COPY env.sh /byond/env.sh
 # Cleanup
 RUN rustup self uninstall -y
 RUN rm -rf /root/.cargo && rm -rf /root/.rustup && rm -rf /tmp/*
-RUN (DEBIAN_FRONTEND=noninteractive apt-get remove -y g++-multilib gcc-multilib cmake python3-pip git curl wget)
+RUN (DEBIAN_FRONTEND=noninteractive apt-get remove -y g++-multilib gcc-multilib cmake python3-pip curl wget)
 RUN (DEBIAN_FRONTEND=noninteractive apt-get autoremove -y)

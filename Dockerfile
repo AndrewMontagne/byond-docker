@@ -40,11 +40,17 @@ COPY env.sh /byond/env.sh
 
 # SpacemanDMM
 RUN cd /tmp && git clone https://github.com/SpaceManiac/SpacemanDMM.git
-RUN cd /tmp/SpacemanDMM && cargo build --release
 
+RUN cd /tmp/SpacemanDMM && cargo build --release --bin dreamchecker
 RUN cp /tmp/SpacemanDMM/target/release/dreamchecker /usr/bin/DreamChecker
+
+RUN cd /tmp/SpacemanDMM && cargo build --release --bin dmm-tools
 RUN cp /tmp/SpacemanDMM/target/release/dmm-tools /usr/bin/dmm-tools
+
+RUN cd /tmp/SpacemanDMM && cargo build --release --bin dmdoc
 RUN cp /tmp/SpacemanDMM/target/release/dmdoc /usr/bin/dmdoc
+
+RUN cd /tmp/SpacemanDMM && cargo build --release --bin dm-langserver
 RUN cp /tmp/SpacemanDMM/target/release/dm-langserver /usr/bin/dm-langserver
 
 # Environment File

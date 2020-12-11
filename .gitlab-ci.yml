@@ -1,27 +1,17 @@
 stages:
   - build
   - publish
-  - cleanup
 
 build:
   stage: build
   tags:
     - shell-runner
   script:
-    - docker build . --no-cache --squash -t andrewmontagne/byond:$CI_COMMIT_SHORT_SHA
+    - docker build . --no-cache --squash -t andrewmontagne/byond:$CI_COMMIT_BRANCH
 
 docker-hub:
   stage: publish
   tags:
     - shell-runner
   script:
-    - docker push andrewmontagne/byond:$CI_COMMIT_SHORT_SHA
-    - docker tag andrewmontagne/byond:$CI_COMMIT_SHORT_SHA andrewmontagne/byond:$CI_COMMIT_BRANCH
     - docker push andrewmontagne/byond:$CI_COMMIT_BRANCH
-
-prune:
-  stage: cleanup
-  tags:
-    - shell-runner
-  script:
-    - docker rmi andrewmontagne/byond:$CI_COMMIT_SHORT_SHA

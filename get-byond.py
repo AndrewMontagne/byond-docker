@@ -1,6 +1,6 @@
 import requests, re, zipfile, io, shutil, os
 
-byond_data = requests.get('http://www.byond.com/download/build/LATEST/').text
+byond_data = requests.get('http://www.byond.com/download/build/514/').text
 
 regex = re.compile('>(\d+)\.(\d+)_byond_linux.zip<\/a> (\d{2}-\w{3}-\d{4} \d{2}:\d{2})')
 parsed_data = regex.findall(byond_data)

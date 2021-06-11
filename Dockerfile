@@ -45,6 +45,8 @@ RUN cp /tmp/SpacemanDMM/target/release/dmdoc /usr/bin/dmdoc
 RUN cd /tmp/SpacemanDMM && cargo build --release --bin dm-langserver
 RUN cp /tmp/SpacemanDMM/target/release/dm-langserver /usr/bin/dm-langserver
 
+COPY dreamchecker.dm /byond/lib/dreamchecker.dm
+
 # Environment File
 COPY env.sh /byond/env.sh
 

@@ -7,6 +7,7 @@ build:
   tags:
     - shell-runner
   script:
+    - docker pull debian:stable-slim
     - docker build . --no-cache --squash -t andrewmontagne/byond:$CI_COMMIT_BRANCH
 
 docker-hub:

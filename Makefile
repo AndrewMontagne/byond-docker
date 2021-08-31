@@ -5,4 +5,5 @@ sh:
 	docker run -it --rm --name byond andrewmontagne/byond:latest /bin/bash
 
 build:
+	docker pull debian:stable-slim
 	docker build . --squash -t andrewmontagne/byond

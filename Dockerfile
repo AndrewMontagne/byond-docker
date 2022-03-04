@@ -1,13 +1,14 @@
 FROM debian:stable-slim
 RUN dpkg --add-architecture i386
 RUN apt-get update
-RUN (DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y python3 python3-pip rsync curl git git-lfs wget)
+RUN (DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y python3 python3-pip rsync curl git git-lfs wget tree)
 RUN (DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y g++-multilib gcc-multilib cmake make libc6:i386 libncurses5:i386 libstdc++6:i386 zlib1g-dev:i386 libssl-dev:i386 pkg-config:i386)
 RUN rm -rf /var/lib/apt/lists/*
 RUN pip3 install requests
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 RUN rustup override add stable-i686-unknown-linux-gnu
+RUN rustup target add i686-unknown-linux-gnu
 
 # BYOND
 COPY get-byond.py /get-byond.py
@@ -46,6 +47,16 @@ RUN cd /tmp/SpacemanDMM && cargo build --release --bin dm-langserver
 RUN cp /tmp/SpacemanDMM/target/release/dm-langserver /usr/bin/dm-langserver
 
 COPY dreamchecker.dm /byond/lib/dreamchecker.dm
+
+# Auxtools
+
+RUN cd /tmp && git clone https://github.com/willox/auxtools
+
+ENV PKG_CONFIG_ALLOW_CROSS=1
+RUN cd /tmp/auxtools && cargo build --release --target i686-unknown-linux-gnu
+
+RUN cp /tmp/auxtools/target/i686-unknown-linux-gnu/release/libdebug_server.so /root/.byond/bin/libdebug_server.so
+COPY debug_server.dm /byond/lib/debug_server.dm
 
 # Environment File
 COPY env.sh /byond/env.sh

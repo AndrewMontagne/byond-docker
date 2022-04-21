@@ -61,8 +61,12 @@ COPY debug_server.dm /byond/lib/debug_server.dm
 # Environment File
 COPY env.sh /byond/env.sh
 
+# Visual Studio Code server
+COPY download_vscode.sh /root/download_vscode.sh
+RUN chmod +x /root/download_vscode.sh && /root/download_vscode.sh
+
 # Cleanup
 RUN rustup self uninstall -y
-RUN rm -rf /root/.cargo && rm -rf /root/.rustup && rm -rf /tmp/*
+RUN rm -rf /root/.cargo && rm -rf /root/.rustup && rm -rf /tmp/* && rm /root/download_vscode.sh
 RUN (DEBIAN_FRONTEND=noninteractive apt-get remove -y g++-multilib gcc-multilib cmake python3-pip curl wget)
 RUN (DEBIAN_FRONTEND=noninteractive apt-get autoremove -y)

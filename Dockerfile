@@ -68,5 +68,6 @@ RUN chmod +x /root/download_vscode.sh && /root/download_vscode.sh
 # Cleanup
 RUN rustup self uninstall -y
 RUN rm -rf /root/.cargo && rm -rf /root/.rustup && rm -rf /tmp/* && rm /root/download_vscode.sh
-RUN (DEBIAN_FRONTEND=noninteractive apt-get remove -y g++-multilib gcc-multilib cmake python3-pip curl wget)
+RUN (DEBIAN_FRONTEND=noninteractive apt-get remove -y g++-multilib gcc-multilib libncurses5:i386 zlib1g-dev:i386 pkg-config:i386 cmake python3-pip curl wget)
 RUN (DEBIAN_FRONTEND=noninteractive apt-get autoremove -y)
+RUN rm -rf /cache/* && rm -rf /root/.vscode-server/bin/*/extensions/*

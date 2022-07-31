@@ -1,7 +1,7 @@
 FROM debian:stable-slim
 RUN dpkg --add-architecture i386
 RUN apt-get update
-RUN (DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y python3 python3-pip rsync curl git git-lfs wget tree)
+RUN (DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y python3 python3-pip rsync curl git git-lfs wget tree expect nano)
 RUN (DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y g++-multilib gcc-multilib cmake make libc6:i386 libncurses5:i386 libstdc++6:i386 zlib1g-dev:i386 libssl-dev:i386 pkg-config:i386)
 RUN rm -rf /var/lib/apt/lists/*
 RUN pip3 install requests
@@ -64,6 +64,9 @@ COPY env.sh /byond/env.sh
 # Visual Studio Code server
 COPY download_vscode.sh /root/download_vscode.sh
 RUN chmod +x /root/download_vscode.sh && /root/download_vscode.sh
+
+# Tests
+ADD tests /byond/tests
 
 # Cleanup
 RUN rustup self uninstall -y

@@ -1,0 +1,13 @@
+#!/usr/bin/expect
+set timeout 1
+
+spawn DreamMaker test.dme
+expect "test.dmb - 0 errors, 0 warnings*"
+close
+
+spawn DreamDaemon test.dmb -trusted
+expect "TEST SUITE START"
+expect "PASS RUSTG"
+expect "PASS AUXTOOLS"
+expect "TEST SUITE FINISH"
+close

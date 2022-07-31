@@ -7,12 +7,15 @@ parsed_data = regex.findall(byond_data)
 
 minor_ver = 0
 major_ver = 0
+max_minor = 1584
+max_major = 514
+
 url = None
 for tuple in parsed_data:
-    if int(tuple[0]) > major_ver:
+    if int(tuple[0]) > major_ver and int(tuple[0]) <= max_major:
         major_ver = int(tuple[0])
 
-    if int(tuple[1]) > minor_ver:
+    if int(tuple[1]) > minor_ver and int(tuple[1]) <= max_minor:
         minor_ver = int(tuple[1])
         url = 'http://www.byond.com/download/build/%i/%i.%i_byond_linux.zip' % (major_ver, major_ver, minor_ver)
 

@@ -1,0 +1,28 @@
+
+#define DEBUG
+
+#include "/byond/lib/rust_g.dm"
+#include "/byond/lib/dreamchecker.dm"
+#include "/byond/lib/debug_server.dm"
+
+/world/New()
+    world.log << "TEST SUITE START"
+    try
+        var/out = rustg_hash_string(RUSTG_HASH_MD5, "test")
+        if (out != "098f6bcd4621d373cade4e832627b4f6")
+            world.log << "FAIL RUSTG"
+            world.log << "HASH FAIL! [out] != 098f6bcd4621d373cade4e832627b4f6"
+        world.log << "PASS RUSTG"
+    catch (var/exception/ex1)
+        world.log << "FAIL RUSTG"
+        world.log << "[ex1.name] @ [ex1.file]:[ex1.line]"
+
+    try
+        debug_initialise()
+        world.log << "PASS AUXTOOLS DEBUG"
+    catch (var/exception/ex2)
+        world.log << "FAIL AUXTOOLS DEBUG"
+        world.log << "[ex2.name] @ [ex2.file]:[ex2.line]"
+
+    world.log << "TEST SUITE FINISH"
+    world.Del()

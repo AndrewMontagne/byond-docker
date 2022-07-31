@@ -6,8 +6,12 @@ expect "test.dmb - 0 errors, 0 warnings*"
 close
 
 spawn DreamDaemon test.dmb -trusted
-expect "TEST SUITE START"
-expect "PASS RUSTG"
-expect "PASS AUXTOOLS"
-expect "TEST SUITE FINISH"
+expect {
+	"PASS RUSTG" {}
+	timeout { exit 1 }
+}
+expect {
+	"PASS EXTOOLS" {}
+	timeout { exit 2 }
+}
 close

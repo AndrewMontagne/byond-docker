@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
   - publish
 
 build:
@@ -9,6 +10,12 @@ build:
   script:
     - docker pull debian:stable-slim
     - docker build . --no-cache --squash -t andrewmontagne/byond:$CI_COMMIT_BRANCH
+
+test:
+  stage: test
+  tags:
+    - shell-runner
+  script:
     - docker run --rm andrewmontagne/byond:$CI_COMMIT_BRANCH bash -c "cd /byond/tests && source /byond/env.sh && /usr/bin/expect /byond/tests/test.expect"
 
 docker-hub:

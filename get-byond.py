@@ -1,21 +1,26 @@
 import requests, re, zipfile, io, shutil, os
 
-byond_data = requests.get('http://www.byond.com/download/build/514/').text
+byond_data = requests.get('http://www.byond.com/download/build/LATEST/').text
 
 regex = re.compile('>(\d+)\.(\d+)_byond_linux.zip<\/a> (\d{2}-\w{3}-\d{4} \d{2}:\d{2})')
 parsed_data = regex.findall(byond_data)
 
 minor_ver = 0
 major_ver = 0
+max_minor = None
+max_major = 514
 
-url = None
 for tuple in parsed_data:
-    if int(tuple[0]) > major_ver:
-        major_ver = int(tuple[0])
+    parsed_major = int(tuple[0])
+    parsed_minor = int(tuple[1])
+    if parsed_major > major_ver and (max_major is not None and parsed_major <= max_major):
+        major_ver = parsed_major
+        minor_ver = parsed_minor
 
-    if int(tuple[1]) > minor_ver:
+    if parsed_minor > minor_ver and (max_minor is not None and parsed_minor <= max_minor):
         minor_ver = int(tuple[1])
-        url = 'http://www.byond.com/download/build/%i/%i.%i_byond_linux.zip' % (major_ver, major_ver, minor_ver)
+        
+url = 'http://www.byond.com/download/build/%i/%i.%i_byond_linux.zip' % (major_ver, major_ver, minor_ver)
 
 VERSION_FILENAME = './byond_version.txt'
 

@@ -1,5 +1,5 @@
 #!/usr/bin/expect
-set timeout 1
+set timeout 10
 
 spawn DreamMaker test.dme
 expect "test.dmb - 0 errors, 0 warnings*"
@@ -7,11 +7,8 @@ close
 
 spawn DreamDaemon test.dmb -trusted
 expect {
-	"PASS RUSTG" {}
-	timeout { exit 1 }
-}
-expect {
-	"PASS EXTOOLS" {}
+	"TEST SUITE PASSED" { exit 0 }
+	"TEST SUITE FAILED" { exit 1 }
 	timeout { exit 2 }
 }
 close

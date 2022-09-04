@@ -6,23 +6,35 @@
 #include "/byond/lib/debug_server.dm"
 
 /world/New()
-    world.log << "TEST SUITE START"
+    var/passed = 0
+    var/failed = 0
     try
         var/out = rustg_hash_string(RUSTG_HASH_MD5, "test")
         if (out != "098f6bcd4621d373cade4e832627b4f6")
             world.log << "FAIL RUSTG"
             world.log << "HASH FAIL! [out] != 098f6bcd4621d373cade4e832627b4f6"
         world.log << "PASS RUSTG"
+        passed += 1
     catch (var/exception/ex1)
         world.log << "FAIL RUSTG"
         world.log << "[ex1.name] @ [ex1.file]:[ex1.line]"
+        failed += 1
 
     try
         debug_initialise()
         world.log << "PASS AUXTOOLS DEBUG"
+        passed += 1
     catch (var/exception/ex2)
         world.log << "FAIL AUXTOOLS DEBUG"
         world.log << "[ex2.name] @ [ex2.file]:[ex2.line]"
+        failed += 1
 
-    world.log << "TEST SUITE FINISH"
+    world.log << "\nDONE ([passed] passed, [failed] failed)\n"
+
+    if (failed > 0)
+        world.log << "TEST SUITE FAILED"
+    else
+        world.log << "TEST SUITE PASSED"
+
+
     world.Del()

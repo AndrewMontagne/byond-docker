@@ -1,14 +1,15 @@
 FROM debian:stable-slim
 RUN dpkg --add-architecture i386
 RUN apt-get update
-RUN (DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y python3 python3-pip rsync curl git git-lfs wget tree expect nano)
+RUN (DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y python3 python3-requests rsync curl git git-lfs wget tree expect nano libssl-dev pkg-config)
 RUN (DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y g++-multilib gcc-multilib cmake make libc6:i386 libncurses5:i386 libstdc++6:i386 zlib1g-dev:i386 libssl-dev:i386 pkg-config:i386)
 RUN rm -rf /var/lib/apt/lists/*
-RUN pip3 install requests
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
 ENV PATH="/root/.cargo/bin:${PATH}"
 RUN rustup override add stable-i686-unknown-linux-gnu
 RUN rustup target add i686-unknown-linux-gnu
+RUN rustup install 1.69.0
+RUN rustup target add --toolchain 1.69.0 i686-unknown-linux-gnu
 
 # BYOND
 COPY get-byond.py /get-byond.py
@@ -51,9 +52,10 @@ COPY dreamchecker.dm /byond/lib/dreamchecker.dm
 # Auxtools
 
 RUN cd /tmp && git clone https://github.com/willox/auxtools
+#RUN cd /tmp/auxtools && git checkout 4f362a3b88220955945e53735b1d5be93abe83b2
 
 ENV PKG_CONFIG_ALLOW_CROSS=1
-RUN cd /tmp/auxtools && cargo build --release --target i686-unknown-linux-gnu
+RUN cd /tmp/auxtools && rustup run 1.69.0 cargo build --release --target i686-unknown-linux-gnu
 
 RUN cp /tmp/auxtools/target/i686-unknown-linux-gnu/release/libdebug_server.so /root/.byond/bin/libdebug_server.so
 COPY debug_server.dm /byond/lib/debug_server.dm
@@ -61,14 +63,10 @@ COPY debug_server.dm /byond/lib/debug_server.dm
 # Environment File
 COPY env.sh /byond/env.sh
 
-# Visual Studio Code server
-COPY download_vscode.sh /root/download_vscode.sh
-RUN chmod +x /root/download_vscode.sh && /root/download_vscode.sh
-
 # Cleanup
 RUN rustup self uninstall -y
-RUN rm -rf /root/.cargo && rm -rf /root/.rustup && rm -rf /tmp/* && rm /root/download_vscode.sh
-RUN (DEBIAN_FRONTEND=noninteractive apt-get remove -y g++-multilib gcc-multilib libncurses5:i386 zlib1g-dev:i386 pkg-config:i386 cmake python3-pip curl wget)
+RUN rm -rf /root/.cargo && rm -rf /root/.rustup && rm -rf /tmp/*
+RUN (DEBIAN_FRONTEND=noninteractive apt-get remove -y g++-multilib gcc-multilib libncurses5:i386 zlib1g-dev:i386 pkg-config:i386 cmake python3-requests curl wget)
 RUN (DEBIAN_FRONTEND=noninteractive apt-get autoremove -y)
 RUN rm -rf /cache/* && rm -rf /root/.vscode-server/bin/*/extensions/*
 

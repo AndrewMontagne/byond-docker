@@ -5,7 +5,7 @@ spawn DreamMaker test.dme
 expect "test.dmb - 0 errors, 0 warnings*"
 close
 
-spawn DreamDaemon test.dmb -trusted
+spawn DreamDaemon test.dmb 5000 -trusted
 expect {
 	"TEST SUITE PASSED" { exit 0 }
 	"TEST SUITE FAILED" { exit 1 }

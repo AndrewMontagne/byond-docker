@@ -7,7 +7,7 @@ parsed_data = regex.findall(byond_data)
 
 minor_ver = 0
 major_ver = 0
-max_minor = None
+max_minor = 1585
 max_major = 514
 
 for tuple in parsed_data:
